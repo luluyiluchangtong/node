@@ -1,0 +1,5 @@
+{
+    "name": "aa",
+    "version": "1.0",
+    "main": "./lib/index.js"
+}

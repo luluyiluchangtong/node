@@ -1,0 +1,1 @@
+ // 所有由 Node.js 引起的 JavaScript 错误与系统错误 都继承自 js 的 error类
