@@ -1,11 +1,10 @@
-var buffer = require("buffer");
-
+//  buffer 是一个全局模块
 // 二进制 0101 逢 2 进 1
 // Buffer 类 被引入处理(读取 或 操作) 二进制数据 (在 TCP流 和 文件系统操作等场景中)
 // Buffer 全局变量，创建后无法调整大小，类似于整数数组
 
 //  Buffer.alloc(size, fill, encoding)   
-//                  默认  0    utf8
+//                     默认 0    utf8
 const bf1 = Buffer.alloc(10)
 console.log(bf1) // 长度为 10   用 00 填充
 

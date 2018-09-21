@@ -5,7 +5,7 @@
 'use strict';
 var fs = require('fs');
 
-// 异步读取文件 --- 文本文件
+// 异步读取文件 --- 文本文件  
 fs.readFile('sample.txt', 'utf-8', function (err, data) {
     if (err) {
         console.log(err);
@@ -14,8 +14,7 @@ fs.readFile('sample.txt', 'utf-8', function (err, data) {
     }
 });
 console.log('abc')
-// fs.readFile() 调用时所做的工作是将 异步式 I/O 请求发给操作系统系统，然后立即返回并执行后面的语句，
-// 执行完后进入事件循环监听事件，当接收到 I/O请求完成时，则调用相关事件。
+//  先后打印出 abc    sample.txt 文件内容
 
 // 异步读取 二进制文件
 fs.readFile('aa.img', function (err, data) {

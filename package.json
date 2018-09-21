@@ -10,6 +10,8 @@
   "author": "lu <luzhengyong1@outlook.com> (http://llylct.com/)",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^2.4.1",
+    "jquery": "^3.3.1",
     "mysql": "^2.15.0"
   },
   "devDependencies": {
