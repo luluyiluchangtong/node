@@ -32,3 +32,6 @@ module.exports.testFn = test
     // module 被加载的时候就执行了，加载之后缓存。
 
     // 模块下相互的 引用时：输出已经执行的部分，未执行的部分不会输出！！ 需要避免这种现象！！
+
+    // __dirname  __filename 总是返回文件的绝对路径
+    // process.cwd()  总是返回执行 node 命令所在的文件夹
