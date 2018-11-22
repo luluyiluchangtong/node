@@ -29,7 +29,7 @@ URL {
 // new URL('foo', 'https://user:pass@sub.host.com:8080/p/a/t/h?query=string#hash');
 // 传入 input 则返回：   href: 'https://user:pass@sub.host.com:8080/p/a/t/foo',
 
-// 获取及设置  
+// url类 的属性 的 获取及设置  
 // url.hash  
 // url.host   域名+端口
 // url.hostname  域名
@@ -44,12 +44,17 @@ URL {
 
 // url类 的方法
 // url.toString() 和 url.toJSON() 的返回值同 url.href 一样
+// url.format(url,option) 可自定义； url.toString() 和 url.href 不可被自定义；
 
 // URLSearchParams 类 需要从 url 引入
 // const { URL, URLSearchParams } = require('url');
 // const myURL = new URL('https://example.org/?abc=123');
-// console.log(myURL.searchParams.get('abc'));  get / set / delete / append
+// console.log(myURL.searchParams.get('abc')); 
+
 
 // new URLSearchParams(string)
-// params = new URLSearchParams('user=abc&query=xyz');
+// params = new URLSearchParams('user=abc&query=xyz');  传入的可以是 String / Object / 具有 iterable 的对象
+// params = new URLSearchParams({user: 'abc',query: ['first', 'second']});
 // console.log(params.get('user'));
+// params.get(getAll) / set / delete / append / entries / keys / values / has / toString / sort / forEach
+

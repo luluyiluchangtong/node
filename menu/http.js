@@ -14,6 +14,8 @@ http.createServer(function (request, response) { // 创建了 http.server的实�
     response.write("hello"); // 响应体
     response.end();
 }).listen(8000) // 调用 listen 函数启动服务器并监听 8000端口
+
+
 // php 需要搭载 Apache / Nignx 环境   jsp 需要Tomcat 服务器
 // nodeJS 集成了 http，因此减少了一个抽象层，给性能带来了提升！
 // nodeJS 的http提供的是底层的接口，如果要用它直接开发网站，则必须手动实现所有东西，需要使用框架！！
@@ -34,10 +36,59 @@ http.createServer(function (request, response) { // 创建了 http.server的实�
 // http.server 继承了 net.server
 // http客户端与 http服务端的通信均依赖于socket (net.socket)
 
-// http.Agent 类   
+// http.Agent 类: Agent 负责为 HTTP 客户端管理连接的持续与复用 
 
-// http.Server 类  
-// http.ServerResponse 类   
-// http.IncomingMessage 类
+// response 是 <http.ServerResponse> 的实例
+// request 是 <http.IncomingMessage> 的实例; 
 
-// http.ClientRequest 类  
+// http.Server 类: 该类继承自 net.Server 
+
+// http.ServerResponse 类: 它作为第二个参数被传入 'request' 事件
+// http.IncomingMessage 类 :IncomingMessage 对象由 http.Server 或 http.ClientRequest 创建，
+//                          它作为第一个参数分别递给 'request' 和 'response' 事件
+
+// http.ClientRequest 类: 该对象在 http.request() 内部被创建并返回
+// http.request(): 返回一个 http.ClientRequest 类的实例, =>(它所有的属性和方法都在 http.ClientRequest 里找)
+const querystring = require("querystring")
+const http = require("http")
+const postData = querystring.stringify({
+    'msg': 'Hello World!'
+});
+
+const options = {
+    hostname: 'www.baidu.com',
+    port: 80,
+    path: '/upload',
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(postData)
+    }
+};
+// const options = new URL('http://abc:xyz@example.com'); 或者是一个 url
+
+const req = http.request(options, (res) => {
+    console.log(`状态码: ${res.statusCode}`);
+    console.log(`响应头: ${JSON.stringify(res.headers)}`);
+    res.setEncoding('utf8');
+    res.on('data', (chunk) => {        // res 是一个 emitter 实例, 所有能触发事件的对象都是 EventEmitter 类的实例
+        console.log(`响应主体: ${chunk}`);
+    });
+    res.on('end', () => {
+        console.log('响应中已无数据。');
+    });
+});
+
+req.on('error', (e) => {
+    console.error(`请求遇到问题: ${e.message}`);
+});
+
+// 写入数据到请求主体
+req.write(postData);
+req.end();
+
+// http.get():该方法与 http.request() 唯一的区别是它设置请求方法为 GET 且自动调用 req.end()
+
+// http.createServer() =>(它所有的属性和方法都在 http.Server 里找)  返回一个新的 http.Server实例
+
+// http.METHODS  http.STATUS_CODES

@@ -60,6 +60,7 @@ myEmitter.defaultMaxListeners = 10
 // 所有 EventEmitter 实例的默认值: 改变会影响所有实例，所以使用 setMaxListeners 优于 defaultMaxListeners
 
 
+// emitter.prependListener() 方法可用于将 事件监听器 添加到 监听器数组 的开头
 myEmitter.on('foo', () => {
     console.log('a')
 });
@@ -67,7 +68,7 @@ myEmitter.prependListener('foo', () => {     // prependOnceListener()
     console.log('b')
 });
 myEmitter.emit('foo');   // b a
-// emitter.prependListener() 方法可用于将 事件监听器 添加到 监听器数组 的开头
+
 
 
 // 移除事件监听器
