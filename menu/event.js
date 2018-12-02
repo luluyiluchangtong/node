@@ -1,39 +1,75 @@
-// 大多数时候不会直接使用 EventEmitter, 而是在对象中继承它，
-// 所有能 触发事件 的 对象 都是 EventEmitter 类的实例
 const EventEmitter = require('events');
-class MyEmitter extends EventEmitter { }  // EventEmitter 类
-const myEmitter = new MyEmitter();     // EventEmitter 实例
-// 使用 eventEmitter.on() 方法注册监听器
-myEmitter.on('event', () => { // 事件监听器：
-    console.log('触发了一个事件！');
-    setImmediate(() => {
-        console.log('这个是异步发生的');
-    });
+// 所有能触发事件的对象都是 EventEmitter 类的实例, 例如 fs http 里的  **.on('open', listener),  其中 ** 就是触发事件的对象
+// 所以大多数时候不会直接使用 EventEmitter, 而是在对象中继承它，
+// 实例通过 事件 注册监听器，然后触发事件。每个事件 最多注册 10 个监听器
+
+class MyEmitter extends EventEmitter {} // EventEmitter 类
+const myEmitter = new MyEmitter(); // EventEmitter 实例
+
+myEmitter.on('event', (a, b) => {
+    // 注册监听器  event是事件名称;   emitter.addListener() 是 emitter.on() 的别名
+    // 添加 listener 函数到名为 eventName 的事件的 '监听器数组' 的末尾
+    console.log(a, b)
+})
+myEmitter.prependListener('event', () => {
+    // emitter.prependListener() 将事件监听器添加到 监听器数组 的开头
+})
+myEmitter.emit('event')
+// 触发事件  若事件有监听器则 返回 true  否则返回 false
+
+myEmitter.emit('event')
+// 触发事件  若是 myEmitter.once() 则此时不再触发 event 事件
+// emitter.prependOnceListener() 方法可用于将 事件监听器 添加到 监听器数组 的开头
+
+
+// 默认是同步调用 监听器， 可使用 setImmediate() 或 process.nextTick() 异步调用监听器
+myEmitter.on('event', setImmediate(
+    (a, b) => { // 注册监听器
+        console.log(a, b)
+    }
+))
+
+console.log(myEmitter.eventNames()) // ['event']   返回已注册监听器的 '事件名数组'
+console.log(myEmitter.listenerCount('event')) //  2  返回正在监听的 event 事件的 监听器 的数量
+console.log(myEmitter.listeners('event')) // [ [Function], [Function] ] 返回 '监听器数组' 的副本
+console.log(myEmitter.rawListeners('event')) // [ [Function], [Function] ] 返回 '监听器数组' 的拷贝
+
+// 实例通过事件注册监听器，每个事件 最多注册 10 个监听器
+// 若监听器超过 设置的数量时，会有 内存泄漏警告
+
+EventEmitter.defaultMaxListeners = 2
+// EventEmitter.defaultMaxListeners 属性改变所有 EventEmitter 实例的默认值
+
+myEmitter.setMaxListeners(myEmitter.getMaxListeners() - 7);
+// getMaxListeners()  setMaxListeners()  某个实例 当前最大的监听器限制数
+myEmitter.on("event", () => {
+    console.log("A");
+});
+myEmitter.on("event", () => {
+    console.log("B");
 });
 
-// 监听器 会在每次触发 命名事件 时被调用， 按照顺序同步触发！
-myEmitter.emit('event');
-myEmitter.emit('event');
-// 触发了一个事件！ 
-// 触发了一个事件！ 
-// 这个是异步发生的
-// 这个是异步发生的
+myEmitter.emit("event");
 
-// 监听器函数可以使用 setImmediate() 或 process.nextTick() 方法切换到异步操作模式
-// 若是只处理事件一次，请用：
-myEmitter.once()  // 则触发两次依然只返回："触发了一个事件！ 这个是异步发生的" 第二次触发时 监听器 被移除
+// 作为最佳实践，应该始终为 'error' 事件 注册监听器
+myEmitter.on('error', (err) => {
+    console.error('错误信息');
+});
+myEmitter.emit('error', new Error('错误信息'));
 
-// 在'newListener' 回调函数中, 一个监听器 的名字如果和 已有监听器 名称相同, 
-// 则在 被插入 到EventEmitter实例的内部监听器数组时, 该监听器会被添加到其它同名监听器的前面。
+
+// 'newListener' 事件
+// myEmitter 实例在添加 '新的监听器' 之前会触发自身的 'newListener' 事件
+// 如果在 newListener 回调中注册 同名事件 的监听器，则该监听器会被插入到正被添加的 '新的监听器' 前面
 myEmitter.once('newListener', (event, listener) => {
     if (event === 'event') {
-        // 在开头插入一个新的监听器
-        myEmitter.on('event', () => {
+        // 在开头插入 同名事件 的监听器
+        myEmitter.on('event', () => { // 回调中注册的名为 event 监听器
             console.log('B');
         });
     }
 });
-myEmitter.on('event', () => {
+myEmitter.on('event', () => { // 添加的 '新的监听器'
     console.log('A');
 });
 myEmitter.emit('event');
@@ -41,49 +77,28 @@ myEmitter.emit('event');
 //   B
 //   A
 
-// 返回一个列出 已注册 监听器 的事件的数组。 数组中的值为字符串或符号
-myEmitter.on('foo', () => { });
-myEmitter.on('bar', () => { });
-console.log(myEmitter.eventNames());  // [ 'foo', 'bar' ]
-console.log(myEmitter.listenerCount("foo"));  // 返回正在监听名为 eventName 的事件的监听器的数量
-
-// 每个事件默认可以注册最多 10 个监听器。 
-// 单个 EventEmitter 实例的限制可以使用 emitter.setMaxListeners(n) 方法改变
-myEmitter.on('event', () => { });
-myEmitter.on('event', () => { });
-console.log(myEmitter.listenerCount('event'));  // Prints: 2   检测监听器的数目
-
-myEmitter.setMaxListeners(3)  // 单个 Emitter实例监听器 数目的限制
-myEmitter.getMaxListeners()   // 3
-
-myEmitter.defaultMaxListeners = 10
-// 所有 EventEmitter 实例的默认值: 改变会影响所有实例，所以使用 setMaxListeners 优于 defaultMaxListeners
-
-
-// emitter.prependListener() 方法可用于将 事件监听器 添加到 监听器数组 的开头
-myEmitter.on('foo', () => {
-    console.log('a')
+// removeListener 事件    
+myEmitter.on("removeListener", (event, Listener) => {
+    if (event === "event") {
+        console.log("B")
+    }
 });
-myEmitter.prependListener('foo', () => {     // prependOnceListener()
-    console.log('b')
+
+myEmitter.on("event", () => {
+    console.log("A");
 });
-myEmitter.emit('foo');   // b a
 
+myEmitter.emit("event");
+myEmitter.removeAllListeners("event");
+// 打印:
+//   A
+//   B
 
+myEmitter.removeAllListeners('event')
+// 移除 event 事件下所有的监听器
 
-// 移除事件监听器
-// removeListener()  removeAllListeners()  只有在绑定的相应事件的 触发器 依次触发后，移除事件
-myEmitter.removeListener("foo", () => { console.log('ddd') })
+myEmitter.removeListener('event', callbackA)
+// 需传入 特定的名称的 回调函数名，即移除 event 事件下指定的 监听器
+// emitter.removeListener() 的别名  emitter.off()
 
-// 别名是  emitter.off(eventName, listener) 
-
-
-myEmitter.emit('error', new Error('whoops!'));    // 有错误
-// 如果 EventEmitter 没有为 'error' 事件注册至少一个监听器，则当 'error' 事件触发时，
-//  会抛出错误、打印堆栈跟踪、且退出 Node.js 进程;
-// 为了防止 Node.js 进程崩溃，可以在 process 对象的 uncaughtException 事件上注册监听器
-// !!! 作为最佳实践，应该始终为 'error' 事件注册监听器。!!!
-
-process.on('uncaughtException', (err) => {
-    console.error('有错误');
-});
+// 在事件触发之后、且最后一个监听器执行完成之前，removeListener() 或 removeAllListeners() 不会从 emit() 中移除它们。

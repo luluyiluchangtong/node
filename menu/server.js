@@ -2,6 +2,8 @@ const http = require("http"); // 引入模块
 
 
 http.createServer(function (request, response) {
+    console.log(request.headers);
+    console.log(request.url);
     response.writeHead(200, {
         "Content-Type": "text/plain"
     });
