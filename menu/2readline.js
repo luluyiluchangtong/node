@@ -19,3 +19,5 @@ readline.clearLine(stream, dir) // 清除给定的 TTY 流的 当前行
 readline.clearScreenDown(stream) // 从光标位置向下清除
 readline.cursorTo(stream, x, y) // 移动光标到指定的位置
 // ...
+
+// npm install inquirer

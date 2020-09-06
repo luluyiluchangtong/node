@@ -10,12 +10,14 @@
   "author": "lu <luzhengyong1@outlook.com> (http://llylct.com/)",
   "license": "MIT",
   "dependencies": {
-    "chalk": "^2.4.1",
-    "jquery": "^3.3.1",
-    "mysql": "^2.15.0",
+    "chalk": "^2.4.2",
+    "cowsay": "^1.4.0",
+    "jquery": "^3.5.1",
+    "mysql": "^2.18.1",
+    "progress": "^2.0.3",
     "translator": "^1.9.1"
   },
   "devDependencies": {
-    "express": "^4.16.3"
+    "express": "^4.17.1"
   }
 }

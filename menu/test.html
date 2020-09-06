@@ -11,30 +11,7 @@
 <body>
     <div>Cookie</div>
     <script>
-        const xhr = new XMLHttpRequest()
-        xhr.open('GET', 'http://127.0.0.1:8888/')
-        xhr.send()
-        // fetch('http://127.0.0.1:8888', {
-        //     method: 'PUT',  // 非 GET POST HEAD  方法
-        //     headers: {
-        //         "X-Test-Cors": "123"   // 自定义请求头
-        //     }
-        // })
-        // 跨域： 即 网页所在的 域 发送 ajax 请求时 必须是 同域的地址。
-        // 若地址不同，请求已经发送，内容也返回了，只是浏览器在解析时发现不是同域的内容而拦截下来了，这是浏览器的功能
-        // 直接在 script 标签中书写 请求地址，则无跨域问题，这是 JSONP 的原理 
-        // 除了 get post head 其他请求都需要预请求，然后才能发送该请求。请求头是自定义的也需要 预请求，然后才能发送该请求
 
-        // max-age: 缓存时长  
-        // s-maxage：代理服务器里的设置，也是缓存时长
-        // max-stale: 即 max-age到期了， 只要在 max-stale 时间内仍然可用
-        // no-cache  no-store 的区别
-        // Last-Modified  Etag  的理解
-
-
-        // 验证缓存： 
-
-        console.log(document.cookie)
     </script>
 </body>
 
