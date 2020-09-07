@@ -2,8 +2,12 @@ const stream = require('stream');
 // 是什么？ stream  --- 是一个抽象接口，处理 '流式数据', 
 // 使用？ stream模块主要用于 '开发' 新的流实例，'使用' 流对象 为主的，极少直接使用 stream模块
 // 几乎所有的 Node.js 应用，不管多么简单，都在某种程度上使用了流
+// 尽管理解流的工作方式很重要，但是 stream 模块主要用于开发者创建新类型的流实例。 对于以消费流对象为主的开发者，极少需要直接使用 stream 模块
 
-// 流对象(又分为: 可读流 可写流): HTTP 服务器的请求; process.stdout,  所有的流都是 EventEmitter 的实例
+// 流式数据访问，就相当下载10G的电影，用迅雷边下边播的模式。
+// 非流式数据访问，就相当于，10G的电影，完全下好了，再播放
+
+// 流对象(又分为: 可读流 可写流): HTTP 服务器的请求; process.stdout 都是流的实例,  所有的流都是 EventEmitter 的实例
 // 流对象处理 String  Buffer， 也可以处理其他类型的值
 
 // 流类型: Readable(可写的流)  fs.createWriteStream()
