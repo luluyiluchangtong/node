@@ -1,3 +1,51 @@
+// 1. 导出多个变量
+// 在 server1.js 中
+exports.a="sd"
+exports.fn=()=>{
+    console.log('aa')
+}
+module.exports.abc=()=>{
+    console.log('bb')
+}
+const fuck="haha"
+module.exports.fuck=fuck   // 或  exports.fuck=fuck
+ 
+
+// 在 server.js 中
+const serv=require('./server1.js')
+console.log(serv.a)
+serv.fn()
+serv.abc()
+console.log(serv.fuck)
+
+// 2. 只导出 单个 变量
+// 在 server1.js 中
+// const cc=90
+// module.exports=cc
+
+// 在 server.js 中
+// const serv=require('./server1.js')
+// console.log(serv)
+
+// 3. 导出对象
+// 在 server1.js 中
+const a=90
+const b=89
+const c=78
+exports.obj={a,b,c}
+
+// 在 server.js 中
+const serv=require('./server1.js')
+console.log(serv.obj.a)
+
+
+
+
+
+
+
+
+
 // 模块的缓存
 // 模块在第一次加载（require）后会被缓存(基于 文件名 进行缓存)，之后的调用不会重复加载模块。
 // 如果想要多次执行一个模块，可以导出一个函数，然后调用该函数

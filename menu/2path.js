@@ -55,7 +55,7 @@ console.log(path.resolve('/foo/bar/gar', './aa/bb/cc')) // C:\foo\bar\gar\aa\bb\
 console.log(path.resolve('/foo/bar', './baz')) // C:\foo\bar\baz
 
 // path.join() 使用 \ 将 path 片段链接起来, 并自动规范化
-console.log(path.join('../foo', 'bar', 'zara'))
+console.log(path.join('../foo', 'bar', 'zara'))  // ..\foo\bar\zara
 console.log(filePath.split(path.sep))
 console.log(process.env.PATH.split(path.delimiter))
 

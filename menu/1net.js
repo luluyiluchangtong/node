@@ -1,14 +1,16 @@
 const net = require('net')
-// 进程间通信(inter-process communication 或 interprocess communication，简写IPC)
-// 是指两个或两个以上进程(或线程)之间进行 数据或信号交互 的技术方案，IPC一般包含客户端和服务器
+// net 模块用于创建 基于流的 TCP 或 IPC 的服务器（net.createServer()）与客户端（net.createConnection()）。
+// IPC: 进程间通信(inter-process communication 或 interprocess communication，简写IPC) 提供了各种进程间通信的方法
+//     是指两个或两个以上 进程(或线程) 之间进行 数据或信号交互 的技术方案，IPC 一般包含客户端 和 服务器
 
 // net.Server类
-// 此类用于创建 TCP 或本地服务器，是一个 EventEmitter
-const PORT = 8867;
-const HOST = '127.0.0.1';
+// 此类用于创建 TCP 或 IPC 服务器，是一个 EventEmitter
 
-// server 实例的方法：address()  close()   getConnections(callback)  listen()  ref()  unref()
-// server 实例的属性： listening  maxConnections
+// server 实例的方法： address()  close()   getConnections(callback)  listen()  ref()  unref() ...
+// server 实例的属性： listening  maxConnections ...
+// server 实例的事件： connection  close ...
+
+// 1. new net.Server()   // 返回一个  net.Server 类
 const clientHandle = function (socket) {
     console.log('服务端：收到来自客户端的请求');
     const {
@@ -28,37 +30,27 @@ const clientHandle = function (socket) {
     })
 }
 
-// const server = net.createServer(clientHandle); // 返回一个  net.Server 类
-const server = net.Server(clientHandle); // 返回一个  net.Server 类
-
+const server =new net.Server(clientHandle); 
 server.listen(PORT, HOST, function () {
     console.log('tcp server running', server.address());
     console.log(server.listening);
 }); // 服务端：开始监听来自客户端的请求
 
 
-// server 实例的事件  listening  connection  error  close
-server.on('listening', function () {
-    console.log('server is listening at ', server.address());
-})
-
-server.on('connection', function (socket) {
-    console.log('server is connection ', socket);
-})
-
-server.on('error', function (err) {
-    console.log('error', err);
-})
-
-server.on('close', function () {
-    console.log('server is close');
-})
-
-
+// 2. net.createServer(clientHandle)   // 返回一个  net.Server 类
+const net = require('net');
+const server = net.createServer((c) => {
+  c.write('hello\r\n');
+  c.pipe(c);
+});
+server.listen(8124, () => {
+  console.log('server bound');
+});
 
 // net.socket 类
-// net.Socket 可以被用户创建并直接与 server 通信，在 server 中，当一个链接被接受时，
-// 它可以通过监听 net.Server 上的 connection 事件触发而获得，可以使用它来与客户端通信
+// 此类是 TCP 套接字或流式 IPC 端点的抽象
+// net.Socket 可以 被用户创建 并直接与 server 通信
+// 在 server 中，当一个链接被接受时，它可以通过监听 net.Server 上的 connection 事件触发而获得，可以使用它来与客户端通信
 const PORT = 8867;
 const HOST = '127.0.0.1';
 
@@ -103,13 +95,13 @@ client.on('close', function (data) {
 });
 
 
-const server = net.createServer() //  创建 net.server 
+const server = net.createServer() //     创建 net.server 
 const client = net.createConnection() // 创建 net.socket    net.connect() 是 net.createConnection() 的别名
 
 // net 模块提供了 异步网络接口
 // net 模块主要包括两部分： 
-// net.Server  服务端TCP 监听 来自客户端的请求，并使用TCP连接(socket)向客户端发送数据； 内部通过socket来实现与客户端的通信；
-// net.Socket  客户端TCP 连接 到服务器，并与服务器交换数据； socket的node实现，实现了全双工的stream的接口
+// net.Server  服务端TCP 监听 来自客户端的请求，并使用TCP连接(socket)向客户端发送数据； 内部通过 socket 来实现与客户端的通信；
+// net.Socket  客户端TCP 连接 到服务器，并与服务器交换数据； socket 的 node 实现，实现了全双工的 stream 的接口
 var PORT = 3000;
 var HOST = '127.0.0.1';
 

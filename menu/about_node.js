@@ -1,10 +1,15 @@
 // 笔记：
-// nodeJS 不是一种语言，一种框架，一种库。而是一个让 js 运行在服务端的开发平台（是后台运行的 js 的解释器）。它是 "基于"  Chrome V8引擎开发出来的。由 C++ 语言编写的
+// nodeJS 不是一种语言，一种框架，一种库。而是一个让 js 运行在 '服务端的开发平台'（是后台运行的 js 的解释器）。它是 "基于"  Chrome V8引擎开发出来的。由 C++ 语言编写的
 // 阻塞 I/O 和 非阻塞 I/O 的区别是： 主进程是否等待底层返回结果，前者需要等待结果返回才执行，后者不需要等待，而是在需要的时候通过 '事件驱动' 取回结果
 // nodeJS "!! 所有的逻辑 !!" 都是 事件的回调函数， nodeJS 始终在事件循环中。。 程序入口就是事件循环第一个事件的回调函数。
 // node 中的 fs, http, net, Events ....等都是 node 的标准库
 // js 通过 回调 处理异步， 回调即在 事件 触发时调用的一个函数（事件处理程序）
 // e而后 引入的 promise async 解决了 回调嵌套的问题
+
+// node 作为中间层的作用是：
+// 后端出于 性能 和别的原因，提供的接口所返回的 数据格式也许不太适合前端 直接使用。
+// 前端所需的 排序功能、 筛选功能 ，以及到了视图层的 页面展现 ，也许都需要 对接口 所提供的 数据进行二次处理 。
+// 这些处理虽可以放在前端来进行，但也许数据量一大便会浪费浏览器性能。因而现今，增加node端便是一种良好的解决方案
 
 // web 应用的特点：
 // 1. web 是一个典型的 I/O 密集场景（不同于cpu密集）！  静态资源读取， 数据库操作， 渲染页面等。。
@@ -46,6 +51,7 @@
 // npm
 // npm 是 Node.js 标准的软件包管理器
 // npm install / npm update / npm run
+// npm init / npm init -y
 
 // npm root -g   软件包全局安装时在 电脑中的位置。 
 // npm list -g 全局中的软件包 （C:\Users\luzhe\AppData\Roaming\npm\node_modules）
@@ -58,11 +64,14 @@
 // npm view mypackage version 查看 某个软件包 最新版本
 // npm view mypackage versions 查看 某个软件包 所有版本
 // npm outdate 查看 package.json 中的 所有软件包 最新版本。
+// npm info vue 查看包的相关信息
 
 // npm install mypackage@1.2.0  安装某个版本的软件包
 // npm uninstall mypackage -S (移除依赖)  npm uninstall mypackage -D (移除生产中的依赖)  npm uninstall  mypackage -g (移除全局依赖)  相应的是安装  install -S / -D / -g
 // "chalk": "^2.4.2",  其中的  ^ 表示可以更新到补丁版本和次版本， ~ 表示可更新的补丁版本， <  >  <=  >= 接受高于/低于/高于等于/低于等于 指定版本的任何版本  = 接受指定版本  2.1-2.2 接受一定范围的版本
 // 使用 npm 软件包： const http=require("http")  若软件包提供了 命令行程序（例如：npm install cowsay）， 可通过 npx cowsay 执行 
+
+// npm config list / set /get / delete / edit ...  npm 配置信息
 
 // alpha版：内部测试版
 // beta版：公开测试版
