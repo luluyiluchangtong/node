@@ -51,8 +51,7 @@
 
 // ----DNS 服务器： C:\Windows\System32\drivers\etc  hosts 文件是域名解析文件，可以 配置域名和 IP 的映射关系， 加快域名解析。 
 // 本地 DNS：一般是指你电脑上网时 IPv4 或者 IPv6 设置中填写的那个 DNS。这个有可能是 手工指定的 或者是 DHCP 自动分配的
-// ping 工具： 在网络中 Ping 是一个十分好用的 TCP/IP 工具。它主要的功能是用来 检测网络的连通情况 和 分析网络速度
-// ping  127.0.0.1   命令 ping/?  查询ping 工具的用法   ipconfig/all
+
 
 // 1. http.Agent 类
 // 客户端：  Agent 负责着客户端链接的持续和复用；
